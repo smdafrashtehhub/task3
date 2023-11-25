@@ -49,7 +49,7 @@ try {
             <div>';
                 foreach ($result_products as $product)
                 {
-                    echo'<input type="checkbox" id="'.$product['name'].'" name="product[]" value="'.$product['id'].'">
+                    echo'<input type="checkbox" id="'.$product['name'].'" name="products[]" value="'.$product['id'].'">
                     <label for="'.$product['name'].'">'.$product['name'].'</label><br>';
                 }
       echo '</div>

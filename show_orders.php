@@ -14,6 +14,7 @@
 </html>
 
 <?php
+session_start();
 extract($_REQUEST , EXTR_PREFIX_SAME , "dup");
 
 include 'db_info.php';
@@ -34,10 +35,12 @@ try {
                 <th>کد سفارش</th>
                 <th>کاربر سفارش دهنده</th>
                 <th>سفارش</th>
+                <th>عملیات</th>
                <tr>
           </thead><tbody>";
 
     foreach ($result as $order) {
+        $_SESSION['order_id']=$order['id'];
         $username=$conn->prepare("select users.name from users inner join orders on users.id=orders.user_id where orders.user_id=? ");
         $username->bindParam(1,$order['user_id']);
         $username->execute();
@@ -53,6 +56,13 @@ try {
                     foreach ($product as $product_name)
                          echo $product_name['name']."<br>";
                echo"</td>
+               <td>
+                    <form action=''>
+                    <input type='number' name='order_id' hidden value='". $order['id']."'>
+                    <button type='submit' class='btn btn-danger ' formaction='delete.php'>حذف</button>
+                    <button type='submit' class='btn btn-info ' formaction='edit.php'>ویرایش</button>
+                    </form>
+               </td>
                 </tr>
         ";
 

@@ -18,11 +18,11 @@ extract($_REQUEST , EXTR_PREFIX_SAME , "dup");
 include 'db_info.php';
 
 
-    if($_REQUEST['user'] == NULL)
+    if($user == NULL)
         echo "<h3 class='text-primary text-center m-5'> کاربر را انتخاب کنید</h3>";
-    if($_REQUEST['product'] == NULL)
+    if($products == NULL)
         echo "<h3 class='text-primary text-center m-5'> سفارش را انتخاب کنید</h3>";
-    if($_REQUEST['user'] != NULL && $_REQUEST['product'] != NULL) {
+    if($user != NULL && $products != NULL) {
         try {
 
             include 'connection_db.php';
@@ -36,14 +36,12 @@ include 'db_info.php';
 //    $result = $inner->fetch(\PDO::FETCH_ASSOC);
             $inner = $conn->prepare("select id from orders ORDER BY  id desc");
             $inner->execute();
-            $result = $inner->fetch(\PDO::FETCH_ASSOC);
+            $order_id = $inner->fetch(\PDO::FETCH_ASSOC);
 
-            foreach ($_REQUEST['product'] as $product) {
+            foreach ($products as $product) {
                 $products = $conn->prepare("insert into order_product(order_id,product_id)values (?,?)");
-                $order_id = $result['id'];
-                $product_id = $product;
-                $products->bindParam(1, $order_id);
-                $products->bindParam(2, $product_id);
+                $products->bindParam(1, $order_id['id']);
+                $products->bindParam(2, $product);
                 $products->execute();
             }
             echo "<h3 class='text-primary text-center m-5'> سفارش با موفقیت ثبت شد</h3>";
